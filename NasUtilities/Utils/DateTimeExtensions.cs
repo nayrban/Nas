@@ -19,7 +19,7 @@ namespace NasUtilities.Utils
         public static string GetShortestDayName(this DateTime dateTime)
         {
             string cultureinfo = ConfigurationManager.AppSettings["DefaultCulture"];
-            CultureInfo ci = new CultureInfo("en-US");
+            CultureInfo ci = new CultureInfo(cultureinfo);
             DateTimeFormatInfo dateTimeInfo = ci.DateTimeFormat;
             return dateTimeInfo.GetShortestDayName(dateTime.DayOfWeek);
         }

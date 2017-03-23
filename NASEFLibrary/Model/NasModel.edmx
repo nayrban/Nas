@@ -1,0 +1,561 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="NasModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="t_device">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="notification_key" Type="varchar" MaxLength="400" Nullable="false" />
+          <Property Name="os_version" Type="varchar" MaxLength="50" />
+          <Property Name="id_member" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_member">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="70" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="70" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="20" />
+          <Property Name="address" Type="varchar" MaxLength="240" />
+          <Property Name="email" Type="varchar" MaxLength="120" />
+          <Property Name="age" Type="int" />
+          <Property Name="dob" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="t_ministry">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="340" />
+        </EntityType>
+        <EntityType Name="t_ministry_member">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ministry_id" Type="int" />
+          <Property Name="member_id" Type="int" />
+        </EntityType>
+        <EntityType Name="t_role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="240" />
+        </EntityType>
+        <EntityType Name="t_role_detail">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_role" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="varchar" MaxLength="150" />
+          <Property Name="schedule" Type="datetime" Precision="0" />
+          <Property Name="notifications_key_days" Type="varchar" MaxLength="80" />
+        </EntityType>
+        <EntityType Name="t_role_detail_member">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_member" Type="int" />
+          <Property Name="id_role_detail" Type="int" />
+        </EntityType>
+        <EntityType Name="t_role_ministry">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_ministry" Type="int" Nullable="false" />
+          <Property Name="id_role" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="device_id_member">
+          <End Role="t_member" Type="Self.t_member" Multiplicity="1" />
+          <End Role="t_device" Type="Self.t_device" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_member">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_device">
+              <PropertyRef Name="id_member" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="member_id_ministry_member">
+          <End Role="t_member" Type="Self.t_member" Multiplicity="0..1" />
+          <End Role="t_ministry_member" Type="Self.t_ministry_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_member">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_ministry_member">
+              <PropertyRef Name="member_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="member_id_role_detail_member">
+          <End Role="t_member" Type="Self.t_member" Multiplicity="0..1" />
+          <End Role="t_role_detail_member" Type="Self.t_role_detail_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_member">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_detail_member">
+              <PropertyRef Name="id_member" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ministry_id_ministry_member">
+          <End Role="t_ministry" Type="Self.t_ministry" Multiplicity="0..1" />
+          <End Role="t_ministry_member" Type="Self.t_ministry_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_ministry">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_ministry_member">
+              <PropertyRef Name="ministry_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ministry_id_role_ministry">
+          <End Role="t_ministry" Type="Self.t_ministry" Multiplicity="1" />
+          <End Role="t_role_ministry" Type="Self.t_role_ministry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_ministry">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_ministry">
+              <PropertyRef Name="id_ministry" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="role_detail_id_role_detail_member">
+          <End Role="t_role_detail" Type="Self.t_role_detail" Multiplicity="0..1" />
+          <End Role="t_role_detail_member" Type="Self.t_role_detail_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_role_detail">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_detail_member">
+              <PropertyRef Name="id_role_detail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="role_id_role_detail">
+          <End Role="t_role" Type="Self.t_role" Multiplicity="1" />
+          <End Role="t_role_detail" Type="Self.t_role_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_detail">
+              <PropertyRef Name="id_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="role_id_role_ministry">
+          <End Role="t_role" Type="Self.t_role" Multiplicity="1" />
+          <End Role="t_role_ministry" Type="Self.t_role_ministry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_ministry">
+              <PropertyRef Name="id_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NasModelStoreContainer">
+          <EntitySet Name="t_device" EntityType="Self.t_device" Schema="nazareth" store:Type="Tables" />
+          <EntitySet Name="t_member" EntityType="Self.t_member" Schema="nazareth" store:Type="Tables" />
+          <EntitySet Name="t_ministry" EntityType="Self.t_ministry" Schema="nazareth" store:Type="Tables" />
+          <EntitySet Name="t_ministry_member" EntityType="Self.t_ministry_member" Schema="nazareth" store:Type="Tables" />
+          <EntitySet Name="t_role" EntityType="Self.t_role" Schema="nazareth" store:Type="Tables" />
+          <EntitySet Name="t_role_detail" EntityType="Self.t_role_detail" Schema="nazareth" store:Type="Tables" />
+          <EntitySet Name="t_role_detail_member" EntityType="Self.t_role_detail_member" Schema="nazareth" store:Type="Tables" />
+          <EntitySet Name="t_role_ministry" EntityType="Self.t_role_ministry" Schema="nazareth" store:Type="Tables" />
+          <AssociationSet Name="device_id_member" Association="Self.device_id_member">
+            <End Role="t_member" EntitySet="t_member" />
+            <End Role="t_device" EntitySet="t_device" />
+          </AssociationSet>
+          <AssociationSet Name="member_id_ministry_member" Association="Self.member_id_ministry_member">
+            <End Role="t_member" EntitySet="t_member" />
+            <End Role="t_ministry_member" EntitySet="t_ministry_member" />
+          </AssociationSet>
+          <AssociationSet Name="member_id_role_detail_member" Association="Self.member_id_role_detail_member">
+            <End Role="t_member" EntitySet="t_member" />
+            <End Role="t_role_detail_member" EntitySet="t_role_detail_member" />
+          </AssociationSet>
+          <AssociationSet Name="ministry_id_ministry_member" Association="Self.ministry_id_ministry_member">
+            <End Role="t_ministry" EntitySet="t_ministry" />
+            <End Role="t_ministry_member" EntitySet="t_ministry_member" />
+          </AssociationSet>
+          <AssociationSet Name="ministry_id_role_ministry" Association="Self.ministry_id_role_ministry">
+            <End Role="t_ministry" EntitySet="t_ministry" />
+            <End Role="t_role_ministry" EntitySet="t_role_ministry" />
+          </AssociationSet>
+          <AssociationSet Name="role_detail_id_role_detail_member" Association="Self.role_detail_id_role_detail_member">
+            <End Role="t_role_detail" EntitySet="t_role_detail" />
+            <End Role="t_role_detail_member" EntitySet="t_role_detail_member" />
+          </AssociationSet>
+          <AssociationSet Name="role_id_role_detail" Association="Self.role_id_role_detail">
+            <End Role="t_role" EntitySet="t_role" />
+            <End Role="t_role_detail" EntitySet="t_role_detail" />
+          </AssociationSet>
+          <AssociationSet Name="role_id_role_ministry" Association="Self.role_id_role_ministry">
+            <End Role="t_role" EntitySet="t_role" />
+            <End Role="t_role_ministry" EntitySet="t_role_ministry" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Device">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="notificationKey" Type="String" MaxLength="400" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="osVersion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idMember" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Member" Relationship="Self.device_id_member" FromRole="t_device" ToRole="t_member" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="70" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastName" Type="String" MaxLength="70" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="age" Type="Int32" />
+          <Property Name="dob" Type="DateTime" />
+          <NavigationProperty Name="Device" Relationship="Self.device_id_member" FromRole="t_member" ToRole="t_device" />
+          <NavigationProperty Name="MinistryMember" Relationship="Self.member_id_ministry_member" FromRole="t_member" ToRole="t_ministry_member" />
+          <NavigationProperty Name="RoleDetailMember" Relationship="Self.member_id_role_detail_member" FromRole="t_member" ToRole="t_role_detail_member" />
+        </EntityType>
+        <EntityType Name="Ministry">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="340" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MinistryMember" Relationship="Self.ministry_id_ministry_member" FromRole="t_ministry" ToRole="t_ministry_member" />
+          <NavigationProperty Name="RoleMinistry" Relationship="Self.ministry_id_role_ministry" FromRole="t_ministry" ToRole="t_role_ministry" />
+        </EntityType>
+        <EntityType Name="MinistryMember">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ministryId" Type="Int32" />
+          <Property Name="memberId" Type="Int32" />
+          <NavigationProperty Name="Member" Relationship="Self.member_id_ministry_member" FromRole="t_ministry_member" ToRole="t_member" />
+          <NavigationProperty Name="Ministry" Relationship="Self.ministry_id_ministry_member" FromRole="t_ministry_member" ToRole="t_ministry" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="240" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RoleDetail" Relationship="Self.role_id_role_detail" FromRole="t_role" ToRole="t_role_detail" />
+          <NavigationProperty Name="RoleMinistry" Relationship="Self.role_id_role_ministry" FromRole="t_role" ToRole="t_role_ministry" />
+        </EntityType>
+        <EntityType Name="RoleDetail">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roleId" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="schedule" Type="DateTime" />
+          <Property Name="notificationsKeyDays" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Role" Relationship="Self.role_id_role_detail" FromRole="t_role_detail" ToRole="t_role" />
+          <NavigationProperty Name="RoleDetailMember" Relationship="Self.role_detail_id_role_detail_member" FromRole="t_role_detail" ToRole="t_role_detail_member" />
+        </EntityType>
+        <EntityType Name="RoleDetailMember">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="memberId" Type="Int32" />
+          <Property Name="roleDetailId" Type="Int32" />
+          <NavigationProperty Name="Member" Relationship="Self.member_id_role_detail_member" FromRole="t_role_detail_member" ToRole="t_member" />
+          <NavigationProperty Name="RoleDetail" Relationship="Self.role_detail_id_role_detail_member" FromRole="t_role_detail_member" ToRole="t_role_detail" />
+        </EntityType>
+        <EntityType Name="RoleMinistry">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ministryId" Type="Int32" Nullable="false" />
+          <Property Name="roleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ministry" Relationship="Self.ministry_id_role_ministry" FromRole="t_role_ministry" ToRole="t_ministry" />
+          <NavigationProperty Name="Role" Relationship="Self.role_id_role_ministry" FromRole="t_role_ministry" ToRole="t_role" />
+        </EntityType>
+        <Association Name="device_id_member">
+          <End Role="t_member" Type="NasModel.Member" Multiplicity="1" />
+          <End Role="t_device" Type="NasModel.Device" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_member">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_device">
+              <PropertyRef Name="idMember" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="member_id_ministry_member">
+          <End Role="t_member" Type="NasModel.Member" Multiplicity="0..1" />
+          <End Role="t_ministry_member" Type="NasModel.MinistryMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_member">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_ministry_member">
+              <PropertyRef Name="memberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="member_id_role_detail_member">
+          <End Role="t_member" Type="NasModel.Member" Multiplicity="0..1" />
+          <End Role="t_role_detail_member" Type="NasModel.RoleDetailMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_member">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_detail_member">
+              <PropertyRef Name="memberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ministry_id_ministry_member">
+          <End Role="t_ministry" Type="NasModel.Ministry" Multiplicity="0..1" />
+          <End Role="t_ministry_member" Type="NasModel.MinistryMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_ministry">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_ministry_member">
+              <PropertyRef Name="ministryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ministry_id_role_ministry">
+          <End Role="t_ministry" Type="NasModel.Ministry" Multiplicity="1" />
+          <End Role="t_role_ministry" Type="NasModel.RoleMinistry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_ministry">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_ministry">
+              <PropertyRef Name="ministryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="role_id_role_detail">
+          <End Role="t_role" Type="NasModel.Role" Multiplicity="1" />
+          <End Role="t_role_detail" Type="NasModel.RoleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_detail">
+              <PropertyRef Name="roleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="role_id_role_ministry">
+          <End Role="t_role" Type="NasModel.Role" Multiplicity="1" />
+          <End Role="t_role_ministry" Type="NasModel.RoleMinistry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_ministry">
+              <PropertyRef Name="roleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="role_detail_id_role_detail_member">
+          <End Role="t_role_detail" Type="NasModel.RoleDetail" Multiplicity="0..1" />
+          <End Role="t_role_detail_member" Type="NasModel.RoleDetailMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_role_detail">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_role_detail_member">
+              <PropertyRef Name="roleDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NasEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Devices" EntityType="NasModel.Device" />
+          <EntitySet Name="Members" EntityType="NasModel.Member" />
+          <EntitySet Name="Ministries" EntityType="NasModel.Ministry" />
+          <EntitySet Name="MinistryMembers" EntityType="NasModel.MinistryMember" />
+          <EntitySet Name="Roles" EntityType="NasModel.Role" />
+          <EntitySet Name="RoleDetails" EntityType="NasModel.RoleDetail" />
+          <EntitySet Name="RoleDetailMembers" EntityType="NasModel.RoleDetailMember" />
+          <EntitySet Name="RoleMinistries" EntityType="NasModel.RoleMinistry" />
+          <AssociationSet Name="device_id_member" Association="Self.device_id_member">
+            <End Role="t_member" EntitySet="Members" />
+            <End Role="t_device" EntitySet="Devices" />
+          </AssociationSet>
+          <AssociationSet Name="member_id_ministry_member" Association="Self.member_id_ministry_member">
+            <End Role="t_member" EntitySet="Members" />
+            <End Role="t_ministry_member" EntitySet="MinistryMembers" />
+          </AssociationSet>
+          <AssociationSet Name="member_id_role_detail_member" Association="Self.member_id_role_detail_member">
+            <End Role="t_member" EntitySet="Members" />
+            <End Role="t_role_detail_member" EntitySet="RoleDetailMembers" />
+          </AssociationSet>
+          <AssociationSet Name="ministry_id_ministry_member" Association="Self.ministry_id_ministry_member">
+            <End Role="t_ministry" EntitySet="Ministries" />
+            <End Role="t_ministry_member" EntitySet="MinistryMembers" />
+          </AssociationSet>
+          <AssociationSet Name="ministry_id_role_ministry" Association="Self.ministry_id_role_ministry">
+            <End Role="t_ministry" EntitySet="Ministries" />
+            <End Role="t_role_ministry" EntitySet="RoleMinistries" />
+          </AssociationSet>
+          <AssociationSet Name="role_id_role_detail" Association="Self.role_id_role_detail">
+            <End Role="t_role" EntitySet="Roles" />
+            <End Role="t_role_detail" EntitySet="RoleDetails" />
+          </AssociationSet>
+          <AssociationSet Name="role_id_role_ministry" Association="Self.role_id_role_ministry">
+            <End Role="t_role" EntitySet="Roles" />
+            <End Role="t_role_ministry" EntitySet="RoleMinistries" />
+          </AssociationSet>
+          <AssociationSet Name="role_detail_id_role_detail_member" Association="Self.role_detail_id_role_detail_member">
+            <End Role="t_role_detail" EntitySet="RoleDetails" />
+            <End Role="t_role_detail_member" EntitySet="RoleDetailMembers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NasModelStoreContainer" CdmEntityContainer="NasEntities">
+          <EntitySetMapping Name="Devices">
+            <EntityTypeMapping TypeName="NasModel.Device">
+              <MappingFragment StoreEntitySet="t_device">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="notificationKey" ColumnName="notification_key" />
+                <ScalarProperty Name="osVersion" ColumnName="os_version" />
+                <ScalarProperty Name="idMember" ColumnName="id_member" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="NasModel.Member">
+              <MappingFragment StoreEntitySet="t_member">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="lastName" ColumnName="last_name" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="dob" ColumnName="dob" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ministries">
+            <EntityTypeMapping TypeName="NasModel.Ministry">
+              <MappingFragment StoreEntitySet="t_ministry">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MinistryMembers">
+            <EntityTypeMapping TypeName="NasModel.MinistryMember">
+              <MappingFragment StoreEntitySet="t_ministry_member">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ministryId" ColumnName="ministry_id" />
+                <ScalarProperty Name="memberId" ColumnName="member_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="NasModel.Role">
+              <MappingFragment StoreEntitySet="t_role">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleDetails">
+            <EntityTypeMapping TypeName="NasModel.RoleDetail">
+              <MappingFragment StoreEntitySet="t_role_detail">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="roleId" ColumnName="id_role" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="schedule" ColumnName="schedule" />
+                <ScalarProperty Name="notificationsKeyDays" ColumnName="notifications_key_days" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleDetailMembers">
+            <EntityTypeMapping TypeName="NasModel.RoleDetailMember">
+              <MappingFragment StoreEntitySet="t_role_detail_member">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="memberId" ColumnName="id_member" />
+                <ScalarProperty Name="roleDetailId" ColumnName="id_role_detail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleMinistries">
+            <EntityTypeMapping TypeName="NasModel.RoleMinistry">
+              <MappingFragment StoreEntitySet="t_role_ministry">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ministryId" ColumnName="id_ministry" />
+                <ScalarProperty Name="roleId" ColumnName="id_role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

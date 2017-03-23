@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="11d1d0a4d80940a395feb92f4e8c6232" Name="Diagram1">
+        <EntityTypeShape EntityType="NasModel.Device" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NasModel.Member" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NasModel.Ministry" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NasModel.MinistryMember" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NasModel.Role" Width="1.5" PointX="1.5" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NasModel.RoleDetail" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NasModel.RoleDetailMember" Width="1.5" PointX="3.375" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NasModel.RoleMinistry" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="NasModel.device_id_member" ManuallyRouted="false" />
+        <AssociationConnector Association="NasModel.member_id_ministry_member" ManuallyRouted="false" />
+        <AssociationConnector Association="NasModel.member_id_role_detail_member" ManuallyRouted="false" />
+        <AssociationConnector Association="NasModel.ministry_id_ministry_member" ManuallyRouted="false" />
+        <AssociationConnector Association="NasModel.ministry_id_role_ministry" ManuallyRouted="false" />
+        <AssociationConnector Association="NasModel.role_id_role_detail" ManuallyRouted="false" />
+        <AssociationConnector Association="NasModel.role_id_role_ministry" ManuallyRouted="false" />
+        <AssociationConnector Association="NasModel.role_detail_id_role_detail_member" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

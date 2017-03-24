@@ -19,6 +19,7 @@ namespace NasScheduleService.Dto
         public string RoleDetailDescription { get; set; }
         public string RoleDetailName { get; set; }       
         public DateTime? RoleDetailSchedule { set; get; }
+        public String RoleDetailScheduleValue { set; get; }
         public ICollection<RoleDetailMember> RoleDetailMembers { get; set; }        
     }
 }

@@ -61,7 +61,7 @@ namespace NasScheduleService {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hola {name}, el Ministerio de Educacion Cristiana le recuerda que este {RoleDetailSchedule} le corresponde las clases de {RoleDetailName}. Puede revisar el material en www.drd.com.
+        ///   Looks up a localized string similar to Hola {name}, el Ministerio de Educacion Cristiana le recuerda que este {RoleDetailScheduleValue} le corresponde las clases de Escuela Dominical. Puede revisar el material en https://drive.google.com/drive/folders/0BwNiNixaawNhTW5nWVdhdGlfNTQ?usp=sharing.
         /// </summary>
         internal static string EDUC_C_CLASES_REC {
             get {

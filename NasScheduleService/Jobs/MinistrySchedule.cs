@@ -6,26 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NasUtilities.Utils;
+using System.Threading.Tasks;
 
 namespace NasScheduleService.Jobs
 {
     public class MinistrySchedule : IJob
     {
-        private NasEntities _nasEntities;
-
-        public MinistrySchedule()
-        {
-            _nasEntities = new NasEntities();
-        }
 
         public void Execute(JobExecutionContext context)
         {
-            List<MinistryNotification> listOfMinistryNotifications =  getMinistryNotifications();
+            JobDataMap dataMap = context.JobDetail.JobDataMap;
+
+            NasEntities _nasEntities = (NasEntities)dataMap.Get("entity");
+            List<MinistryNotification> listOfMinistryNotifications =  getMinistryNotifications(_nasEntities);
 
             listOfMinistryNotifications.ForEach(prepareNotificationInfo);
         }
 
-        private List<MinistryNotification> getMinistryNotifications()
+        private List<MinistryNotification> getMinistryNotifications(NasEntities _nasEntities)
         {
             DateTime StartOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + 1);
             DateTime EndOfLastWeek = StartOfWeek.AddDays(+6);
@@ -49,22 +47,21 @@ namespace NasScheduleService.Jobs
                    RoleDetailNotKeys = rd.rd.notificationsKeyDays,
                    RoleDetailName = rd.rd.name,
                    RoleDetailDescription = rd.rd.description,
-                   RoleDetailSchedule = rd.rd.schedule,
+                   RoleDetailSchedule =  rd.rd.schedule,
                    RoleDetailMembers = rd.rd.RoleDetailMember
                });
-
             return entryPoint.ToList();
         }
 
         #region send notification regions
-        private  void prepareNotificationInfo(MinistryNotification ministryNotification)
+        private async void prepareNotificationInfo(MinistryNotification ministryNotification)
         {
-            string notKeys = ministryNotification.RoleDetailNotKeys;                        
-            string resourceTag = !string.IsNullOrEmpty(ministryNotification.RoleDetailDescription) ?
-                ministryNotification.RoleDetailDescription : ministryNotification.RoleDescription;
+            ministryNotification.RoleDetailScheduleValue = ministryNotification.RoleDetailSchedule.Value.ToString("dd/MM/yyyy");
 
-            string message = Resources.ResourceManager.GetString(resourceTag).Inject(ministryNotification);
+            string notKeys =  ministryNotification.RoleDetailNotKeys;                            
 
+            string message = getNotificationMessage(ministryNotification);
+       
             string dayShortName = DateTime.Now.GetShortestDayName();
 
             if (notKeys.Contains(dayShortName)) {
@@ -72,16 +69,31 @@ namespace NasScheduleService.Jobs
                 List<Member> memBerList = getMembers(ministryNotification);
                 foreach(Member member in memBerList)
                 {
-                    notificationMessage = new NotificationMessage {                     
-                        Message = message.Inject(member),
-                        Title = ministryNotification.MinistryName,
-                        NotificationKeyList = new List<string> {
-                            member.Device.First().notificationKey,
-                        }
-                    };
-                    SendNotification(notificationMessage);
+                    createNotificationMessage(out notificationMessage, message, ministryNotification.MinistryName, member);
+                    await SendNotification(notificationMessage);
                 }
             }
+        }
+
+        private void createNotificationMessage(out NotificationMessage notificationMessage, string message, string ministryName, Member member)
+        {
+            notificationMessage = new NotificationMessage
+            {
+                Message = message.Inject(member),
+                Title = ministryName,
+            };
+
+            if (member.Device.Count > 0) {
+                notificationMessage.NotificationKeyList = new List<string>
+                {
+                    member.Device.First().notificationKey
+                };
+                notificationMessage.NotificationType = NotificationType.Fcm;
+            }else if(!String.IsNullOrEmpty(member.email))
+            {
+                notificationMessage.Name = member.name;
+                notificationMessage.To = member.email;                
+            }            
         }
 
         private  List<Member> getMembers(MinistryNotification ministryNotification)
@@ -103,10 +115,22 @@ namespace NasScheduleService.Jobs
             memBerList.Add(member);
         }
 
-        private  void SendNotification(NotificationMessage notificationMessage)
+        private async Task SendNotification(NotificationMessage notificationMessage)
         {
-            CloudNotification cloudNotification = new FcmNotification();
-            cloudNotification.sendNotification(notificationMessage);
+           await CloudNotificationManager.SendNotification(notificationMessage);
+        }
+
+        private string getNotificationMessage(MinistryNotification ministryNotification)
+        {
+            string resourceTag = !string.IsNullOrEmpty(ministryNotification.RoleDetailDescription) ?
+                        ministryNotification.RoleDetailDescription : ministryNotification.RoleDescription;
+
+            string message = Resources.ResourceManager.GetString(resourceTag);
+            if (String.IsNullOrEmpty(message))
+                message = resourceTag;
+            message = message.Inject(ministryNotification);
+
+            return message;
         }
         #endregion        
     }

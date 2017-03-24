@@ -1,5 +1,6 @@
 ﻿using FCM.Net;
 using System;
+using System.Threading.Tasks;
 
 namespace NasNotifications
 {
@@ -14,7 +15,7 @@ namespace NasNotifications
             serverKey = System.Configuration.ConfigurationManager.AppSettings[FCM_SERVER_KEY];
         }
 
-        public async void sendNotification(NotificationMessage notificationMessage)
+        public async Task sendNotification(NotificationMessage notificationMessage)
         {
             using (var sender = new NasFcmSender(serverKey))
             {
@@ -31,5 +32,7 @@ namespace NasNotifications
                 Console.WriteLine($"Success: {result.MessageResponse.Success}");           
             }
         }
+
+     
     }
 }

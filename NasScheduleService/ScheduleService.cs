@@ -1,36 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 using Quartz;
 using Quartz.Impl;
 using NasScheduleService.Jobs;
+using NASEFLibrary.Model;
 
 namespace NasScheduleService
 {
-    public partial class Service1 : ServiceBase
+    public partial class ScheduleService : ServiceBase
     {
-        private static IScheduler _scheduler;
+        private static IScheduler _scheduler;        
 
-        public Service1()
+        public ScheduleService()
         {
             InitializeComponent();
         }
 
         protected override void OnStart(string[] args)
         {
+            NasEntities _nasEntities  = new NasEntities();
+
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
             _scheduler = schedulerFactory.GetScheduler();
 
             IJob myJob = new MinistrySchedule();
             JobDetail jobDetail = new JobDetail("MinistryJob", "Group1", myJob.GetType());
-            Trigger trigger = new CronTrigger("MinistryTrigger", "Group1", /*"0 00 6 * * ? *"*/"0 0/1 * * * ?");
+            Trigger trigger = new CronTrigger("NasTriggers", "Group1", /*"0 00 6 * * ? *"*/"0 0/1 * * * ?");
 
+            jobDetail.JobDataMap.Put("entity", _nasEntities);
             _scheduler.ScheduleJob(jobDetail, trigger);
 
             _scheduler.Start();

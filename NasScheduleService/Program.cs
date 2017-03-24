@@ -27,7 +27,7 @@ namespace NasScheduleService
         {
             if (Environment.UserInteractive)
             {
-                Service1 service1 = new Service1();
+                ScheduleService service1 = new ScheduleService();
                 service1.TestStartupAndStop(args);
             }
             else
@@ -35,7 +35,7 @@ namespace NasScheduleService
                 ServiceBase[] ServicesToRun;
                 ServicesToRun = new ServiceBase[]
                 {
-                new Service1()
+                new ScheduleService()
                 };
                 ServiceBase.Run(ServicesToRun);
             }

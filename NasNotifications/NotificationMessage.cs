@@ -12,6 +12,12 @@ namespace NasNotifications
 
         public string Title { get; set; }
 
+        public string To { get; set; }
+
+        public string Name { get; set; }
+
         public List<string> NotificationKeyList { get; set; }
+
+        public NotificationType NotificationType { get; set; }
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace NasNotifications
 {
-    public interface CloudNotification
+    public enum NotificationType
     {
-        Task sendNotification(NotificationMessage message);
+        Email = 0, Fcm = 1
     }
 }

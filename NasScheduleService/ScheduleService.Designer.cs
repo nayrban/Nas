@@ -1,6 +1,6 @@
 ﻿namespace NasScheduleService
 {
-    partial class Service1
+    partial class ScheduleService
     {
         /// <summary> 
         /// Required designer variable.

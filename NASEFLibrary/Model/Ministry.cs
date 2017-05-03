@@ -19,6 +19,7 @@ namespace NASEFLibrary.Model
         {
             this.MinistryMember = new HashSet<MinistryMember>();
             this.RoleMinistry = new HashSet<RoleMinistry>();
+            this.t_ministry_code = new HashSet<MinistryCode>();
         }
     
         public int id { get; set; }
@@ -29,5 +30,7 @@ namespace NASEFLibrary.Model
         public virtual ICollection<MinistryMember> MinistryMember { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoleMinistry> RoleMinistry { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MinistryCode> t_ministry_code { get; set; }
     }
 }

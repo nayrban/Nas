@@ -12,18 +12,18 @@ namespace NasScheduleService
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-      /*  static void Main()
+        static void Main()
         {
      
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-            new Service1()
+            new ScheduleService()
             };
             ServiceBase.Run(ServicesToRun);            
-        }*/
+        }
 
-        static void Main(string[] args)
+       /* static void Main(string[] args)
         {
             if (Environment.UserInteractive)
             {
@@ -39,6 +39,6 @@ namespace NasScheduleService
                 };
                 ServiceBase.Run(ServicesToRun);
             }
-        }
+        }*/
     }
 }

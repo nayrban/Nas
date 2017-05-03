@@ -11,8 +11,7 @@ namespace NASEFLibrary.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class RoleDetail
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,8 +24,7 @@ namespace NASEFLibrary.Model
         public int roleId { get; set; }
         public string name { get; set; }
         public string description { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? schedule { get; set; }
+        public Nullable<System.DateTime> schedule { get; set; }
         public string notificationsKeyDays { get; set; }
     
         public virtual Role Role { get; set; }

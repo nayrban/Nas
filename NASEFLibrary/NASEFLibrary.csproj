@@ -68,6 +68,9 @@
     <Compile Include="Model\Ministry.cs">
       <DependentUpon>NasModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\MinistryCode.cs">
+      <DependentUpon>NasModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\MinistryMember.cs">
       <DependentUpon>NasModel.tt</DependentUpon>
     </Compile>
@@ -125,6 +128,9 @@
       <DependentUpon>NasModel.edmx</DependentUpon>
       <LastGenOutput>NasModel.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

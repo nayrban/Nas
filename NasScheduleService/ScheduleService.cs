@@ -25,7 +25,7 @@ namespace NasScheduleService
 
             IJob myJob = new MinistrySchedule();
             JobDetail jobDetail = new JobDetail("MinistryJob", "Group1", myJob.GetType());
-            Trigger trigger = new CronTrigger("NasTriggers", "Group1", /*"0 00 6 * * ? *"*/"0 0/1 * * * ?");
+            Trigger trigger = new CronTrigger("NasTriggers", "Group1", "0 00 6 * * ? *"/*"0 0/1 * * * ?"*/);
 
             jobDetail.JobDataMap.Put("entity", _nasEntities);
             _scheduler.ScheduleJob(jobDetail, trigger);

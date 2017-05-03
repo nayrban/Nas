@@ -21,9 +21,8 @@ namespace NASEFLibrary.Model
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {            
-           // throw new UnintentionalCodeFirstException();
-
+        {
+            throw new UnintentionalCodeFirstException();
         }
     
         public virtual DbSet<Device> Devices { get; set; }
@@ -34,5 +33,6 @@ namespace NASEFLibrary.Model
         public virtual DbSet<RoleDetail> RoleDetails { get; set; }
         public virtual DbSet<RoleDetailMember> RoleDetailMembers { get; set; }
         public virtual DbSet<RoleMinistry> RoleMinistries { get; set; }
+        public virtual DbSet<MinistryCode> MinistryCodes { get; set; }
     }
 }

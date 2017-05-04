@@ -8,6 +8,7 @@ using NasDTOUtils.Dto;
 using NasDTOUtils.Dto.Request;
 using NasModel.Model;
 using Nas.Security.Annotations;
+using System.Collections.Generic;
 
 namespace NasAuthentication.API.Controllers
 {
@@ -64,7 +65,7 @@ namespace NasAuthentication.API.Controllers
 
             ApplicationUser user = new ApplicationUser() { UserName = userModel.UserName };            
 
-            IdentityResult result = await userService.RegisterUser(user,userModel.Password);
+            IdentityResult result = await userService.RegisterUser(user,userModel.Password, userModel.Roles);
 
             IHttpActionResult errorResult = GetErrorResult(result);
 
@@ -88,7 +89,7 @@ namespace NasAuthentication.API.Controllers
 
             ApplicationUser user = new ApplicationUser() { UserName = userModel.UserInfo.UserName };
 
-            IdentityResult result = await userService.RegisterUser(user, userModel.UserInfo.Password);
+            IdentityResult result = await userService.RegisterUser(user, userModel.UserInfo.Password, new List<string>() { RoleType.App });
 
             IHttpActionResult errorResult = GetErrorResult(result);
 

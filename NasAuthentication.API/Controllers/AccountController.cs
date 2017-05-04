@@ -76,8 +76,7 @@ namespace NasAuthentication.API.Controllers
 
             return Ok();
         }
-
-        // POST api/Account/Register
+        
         [AllowAnonymous]
         [Route("register/app")]
         public async Task<IHttpActionResult> Register(PostUserRequest userModel)

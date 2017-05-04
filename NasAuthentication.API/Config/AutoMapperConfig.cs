@@ -10,7 +10,8 @@ namespace NasAuthentication.Config
         public static void Init()
         {
             var cfg = new MapperConfigurationExpression();
-            cfg.CreateMap<Device, DeviceInfo>();            
+            cfg.CreateMap<Device, DeviceInfo>();
+            cfg.CreateMap<DeviceInfo, Device>();
 
 
             Mapper.Initialize(cfg);

@@ -1,8 +1,11 @@
 namespace NasData.NasModelContextMigrations
 {
+    using MySql.Data.Entity;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.Migrations.Model;
+    using System.Data.Entity.Migrations.Sql;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<NasData.NasModelContext>
@@ -11,7 +14,7 @@ namespace NasData.NasModelContextMigrations
         {
             AutomaticMigrationsEnabled = false;
             MigrationsDirectory = @"NasModelContextMigrations";
-            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+            SetSqlGenerator("MySql.Data.MySqlClient", new CustomMySqlMigrationSqlGenerator());
         }
 
         protected override void Seed(NasData.NasModelContext context)
@@ -28,6 +31,21 @@ namespace NasData.NasModelContextMigrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+        }
+    }
+
+    internal class CustomMySqlMigrationSqlGenerator : MySqlMigrationSqlGenerator
+    {
+        protected override MigrationStatement Generate(AddColumnOperation addColumnOperation)
+        {            
+
+            return base.Generate(addColumnOperation);
+        }
+
+        protected override MigrationStatement Generate(CreateTableOperation createTableOperation)
+        {           
+
+            return base.Generate(createTableOperation);
         }
     }
 }

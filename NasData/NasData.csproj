@@ -78,10 +78,6 @@
     <Compile Include="Infraestructure\RepositoryBase.cs" />
     <Compile Include="Infraestructure\UnitOfWork.cs" />
     <Compile Include="NasModelContext.cs" />
-    <Compile Include="NasModelContextMigrations\201705030007147_InitialMigrations1.cs" />
-    <Compile Include="NasModelContextMigrations\201705030007147_InitialMigrations1.Designer.cs">
-      <DependentUpon>201705030007147_InitialMigrations1.cs</DependentUpon>
-    </Compile>
     <Compile Include="NasModelContextMigrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Respository\Auth\AuthClientRepository.cs" />
@@ -105,11 +101,6 @@
       <Project>{ebe07b2e-39de-4a35-a70e-37f4d2c5760b}</Project>
       <Name>NasUtilities</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="NasModelContextMigrations\201705030007147_InitialMigrations1.resx">
-      <DependentUpon>201705030007147_InitialMigrations1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

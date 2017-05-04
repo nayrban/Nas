@@ -190,6 +190,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nas.Security\Nas.Security.csproj">
+      <Project>{f2d97b58-bec6-4dc8-a254-33437836c6c2}</Project>
+      <Name>Nas.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NasData\NasData.csproj">
       <Project>{608734d2-dcc3-4d49-81e7-d967a4315bc7}</Project>
       <Name>NasData</Name>

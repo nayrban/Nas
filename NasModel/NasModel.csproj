@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthModel\RoleType.cs" />
     <Compile Include="AuthModel\ApplicationTypes.cs" />
     <Compile Include="AuthModel\ApplicationUser.cs" />
     <Compile Include="AuthModel\Client.cs" />

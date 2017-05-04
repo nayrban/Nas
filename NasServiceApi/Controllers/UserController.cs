@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using NasService;
-using NasServiceAPI.Annotations;
 using System.Collections.Generic;
 using System.Web.Http;
 using AutoMapper.QueryableExtensions;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NasModel.AuthModel;
 using NasDTOUtils.Dto;
+using Nas.Security.Annotations;
 
 namespace NasServiceAPI.Controllers
 {

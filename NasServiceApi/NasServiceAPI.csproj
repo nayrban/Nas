@@ -198,7 +198,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Annotations\NasAuthorize.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Config\AutofacConfig.cs" />
     <Compile Include="Config\AutoMapperConfig.cs" />
@@ -226,6 +225,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nas.Security\Nas.Security.csproj">
+      <Project>{f2d97b58-bec6-4dc8-a254-33437836c6c2}</Project>
+      <Name>Nas.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NasData\NasData.csproj">
       <Project>{608734D2-DCC3-4D49-81E7-D967A4315BC7}</Project>
       <Name>NasData</Name>

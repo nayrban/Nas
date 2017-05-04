@@ -3,7 +3,7 @@ using Microsoft.Owin.Security.OAuth;
 using NasAuthentication.API.Providers;
 using NasAuthentication.Config;
 using NasData;
-
+using NasData.Configuration;
 using Owin;
 using System;
 using System.Data.Entity;
@@ -27,8 +27,8 @@ namespace NasAuthentication.API
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
 
-            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<AuthContext>());
-            //Database.SetInitializer(new DropCreateDatabaseAlways<NasModelContext>());
+            Database.SetInitializer(new AuthModelInitializer());
+            Database.SetInitializer(new CreateDatabaseIfNotExists<NasModelContext>());
             //  Database.SetInitializer<NasModelContext>(null);
         }
 

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using NasModel.AuthModel;
 using NasService;
-using NasData.Respository.Auth;
 using NasDTOUtils.Dto;
 using NasDTOUtils.Dto.Request;
 using NasModel.Model;
@@ -55,7 +54,7 @@ namespace NasAuthentication.API.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("register")]
-        public async Task<IHttpActionResult> Register(UserModel userModel)
+        public async Task<IHttpActionResult> Register(UserInfo userModel)
         {
             if (!ModelState.IsValid)
             {

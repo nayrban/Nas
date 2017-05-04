@@ -5,7 +5,7 @@ namespace NasData.AuthContextMigrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<NasData.AuthContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<AuthContext>
     {
         public Configuration()
         {
@@ -15,7 +15,7 @@ namespace NasData.AuthContextMigrations
 
         }
 
-        protected override void Seed(NasData.AuthContext context)
+        protected override void Seed(AuthContext context)
         {
             //  This method will be called after migrating to the latest version.
 

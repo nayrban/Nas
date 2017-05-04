@@ -46,7 +46,6 @@
     <Compile Include="Dto\NasError.cs" />
     <Compile Include="Dto\Request\MinistryCodeRequest.cs" />
     <Compile Include="Dto\Request\PostUserRequest.cs" />
-    <Compile Include="Dto\Request\UserModel.cs" />
     <Compile Include="Dto\Response\MinistryCodeResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

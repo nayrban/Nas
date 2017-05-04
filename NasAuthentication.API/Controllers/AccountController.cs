@@ -7,6 +7,7 @@ using NasService;
 using NasDTOUtils.Dto;
 using NasDTOUtils.Dto.Request;
 using NasModel.Model;
+using Nas.Security.Annotations;
 
 namespace NasAuthentication.API.Controllers
 {
@@ -26,7 +27,7 @@ namespace NasAuthentication.API.Controllers
             this.deviceService = deviceService;
         }
 
-        [Authorize]              
+        [NasAuthorize(Roles="Admin")]              
         [Route("register/client")]
         public async Task<IHttpActionResult> RegisterClient(Client client)
         {
@@ -52,7 +53,7 @@ namespace NasAuthentication.API.Controllers
         }
 
         // POST api/Account/Register
-        [AllowAnonymous]
+        [NasAuthorize(Roles="Admin, Web")]
         [Route("register")]
         public async Task<IHttpActionResult> Register(UserInfo userModel)
         {

@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using NasData.Infraestructure;
 using NasModel.AuthModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,13 +11,15 @@ namespace NasData.Respository.Auth
 {
     public interface IApplicationUserRepository : IRepository<ApplicationUser>
     {
-        Task<IdentityResult> RegisterUser(ApplicationUser userModel, string password);
+        Task<IdentityResult> RegisterUser(ApplicationUser userModel, string password, List<string> roles);
 
         Task<IdentityResult> UpdateUser(ApplicationUser userModel);
 
         Task<ApplicationUser> FindUser(string userName, string password);
 
         Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login);
+
+        Task<IList<string>> UserRoles(string userId);
 
         Task<ApplicationUser> FindUser(string userName);
 
@@ -28,17 +31,24 @@ namespace NasData.Respository.Auth
     public class ApplicationUserRepository : RepositoryBase<AuthContext, ApplicationUser>, IApplicationUserRepository
     {        
 
-        private UserManager<ApplicationUser> _userManager;
+        private UserManager<ApplicationUser> _userManager;        
 
         public ApplicationUserRepository(IDbFactory<AuthContext> dbFactory) : base(dbFactory)
         {            
-            _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
+            _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));            
         }
 
-        public async Task<IdentityResult> RegisterUser(ApplicationUser user, string password)
+        public async Task<IdentityResult> RegisterUser(ApplicationUser user, string password, List<string> roles)
         {            
 
             var result = await _userManager.CreateAsync(user, password);
+
+            if (result.Succeeded)
+            {
+                foreach(string role in roles) { 
+                    await _userManager.AddToRoleAsync(user.Id, role);
+                }
+            }
 
             return result;
         }
@@ -90,6 +100,11 @@ namespace NasData.Respository.Auth
             Take(limit);
 
             return users;
+        }
+
+        public async Task<IList<string>> UserRoles(string userId)
+        {
+            return await _userManager.GetRolesAsync(userId);
         }
     }
 }

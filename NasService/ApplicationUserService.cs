@@ -6,6 +6,7 @@ using NasData.Respository;
 using NasData.Respository.Auth;
 using NasModel.AuthModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,13 +16,15 @@ namespace NasService
 
     public interface IApplicationUserService : IDisposable
     {
-        Task<IdentityResult> RegisterUser(ApplicationUser userModel, string password);
+        Task<IdentityResult> RegisterUser(ApplicationUser userModel, string password, List<string> roles);
 
         Task<IdentityUser> FindUser(string userName, string password);
 
         Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login);
 
         Task<ApplicationUser> FindUser(string userName);
+
+        Task<IList<string>> UserRoles(string userId);
 
         Task<IdentityResult> UpdateUser(ApplicationUser userModel);
 
@@ -47,9 +50,9 @@ namespace NasService
             this.deviceRepository = deviceRepository;
         }    
 
-        public async Task<IdentityResult> RegisterUser(ApplicationUser userModel, string password)
+        public async Task<IdentityResult> RegisterUser(ApplicationUser userModel, string password, List<string> role)
         {
-            return await userRepository.RegisterUser(userModel, password);
+            return await userRepository.RegisterUser(userModel, password, role);
         }
 
         public async Task<IdentityUser> FindUser(string userName, string password)
@@ -91,6 +94,11 @@ namespace NasService
         public int Count()
         {
             return userRepository.Count();
+        }
+
+        public async Task<IList<string>> UserRoles(string userId)
+        {
+            return await userRepository.UserRoles(userId);
         }
     }
 }

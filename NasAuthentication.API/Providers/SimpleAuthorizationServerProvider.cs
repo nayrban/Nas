@@ -94,9 +94,10 @@ namespace NasAuthentication.API.Providers
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            var autofacLifetimeScope = OwinContextExtensions.GetAutofacLifetimeScope(context.OwinContext);        
+            var autofacLifetimeScope = OwinContextExtensions.GetAutofacLifetimeScope(context.OwinContext);
 
-            using (ApplicationUserService _repo = autofacLifetimeScope.Resolve<ApplicationUserService>())
+            IList<string> roles = null;
+            using (IApplicationUserService _repo = autofacLifetimeScope.Resolve<IApplicationUserService>())
             {
                 IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
 
@@ -105,12 +106,20 @@ namespace NasAuthentication.API.Providers
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;
                 }
+                else
+                {                    
+                    roles = await _repo.UserRoles(user.Id);
+                }
             }
 
+            string defaultRole = roles != null && roles.Count > 0 ? roles[0] : string.Empty;
+
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim("sub", context.UserName));
-            identity.AddClaim(new Claim("role", "user"));
+            //Handle roles
+            identity.AddClaim(new Claim(ClaimTypes.Role, defaultRole));
 
             var props = new AuthenticationProperties(new Dictionary<string, string>
                 {
